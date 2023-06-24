@@ -21,6 +21,8 @@ const Countries: React.FC = () => {
   const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState<number>(0);
 
+   // Sorting countries based on the selected order (ascending or descending)
+
   const sortCountries = (countries: Country[]) => {
     return [...countries].sort((a, b) => {
       if (sortOrder === "asc") {
@@ -31,9 +33,13 @@ const Countries: React.FC = () => {
     });
   };
 
+   // Toggling the sort order between ascending and descending
+
   const toggleSortOrder = () => {
     setSortOrder(sortOrder === "asc" ? "desc" : "asc");
   };
+
+    // Filtering countries based on the selected filter criteria
 
   const filterCountries = () => {
     let filtered: Country[] = [];
@@ -43,8 +49,11 @@ const Countries: React.FC = () => {
       filtered = allCountries.filter((country) => country.area < 65300);
     }
     setFilteredCountries(sortCountries(filtered));
-    setCurrentPage(0); // Reset current page when applying a filter
+    setCurrentPage(0);
   };
+
+
+    // Filter countries based on the selected filter criteria
 
   useEffect(() => {
     setIsLoading(true);
@@ -58,23 +67,31 @@ const Countries: React.FC = () => {
       });
   }, []);
 
+
+  // Triggering country filtering whenever the filter criteria changes
   useEffect(() => {
     filterCountries();
   }, [filterBy]);
 
+
+  // Triggering country sorting whenever the sort order or all countries data changes
   useEffect(() => {
     const sortedCountries = sortCountries(allCountries);
     setFilteredCountries(sortedCountries);
   }, [sortOrder, allCountries]);
 
+
+    // Handling filter selection
   const handleFilter = (filter: string) => {
     setFilterBy(filter);
   };
 
+    // Handling tab selection
   const handleTabSelect = (index: number) => {
     setCurrentPage(index);
   };
 
+   // Rendering countries in tabs based on pagination
   const renderCountriesInTabs = () => {
     const pageCount = Math.ceil(filteredCountries.length / itemsPerPage);
     const tabs = [];
@@ -85,6 +102,7 @@ const Countries: React.FC = () => {
       const endIdx = startIdx + itemsPerPage;
       const countriesInTab = filteredCountries.slice(startIdx, endIdx);
 
+         // Generating country elements for each tab
       const countryElements = countriesInTab.map(({ name, region, area, flag }) => (
         <div
           key={name}
@@ -111,6 +129,7 @@ const Countries: React.FC = () => {
 
   const { tabs, tabPanels } = renderCountriesInTabs();
 
+   // Rendering loading spinner while data is being fetched
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -121,7 +140,7 @@ const Countries: React.FC = () => {
 
   return (
     <div>
-      <h2 className="text-center text-4xl">Countries: {filteredCountries.length}</h2>
+      <h2 className="text-center text-4xl my-10">Countries: {filteredCountries.length}</h2>
       <div className="ms-10">
         <label>
           <span>Sort By: </span>
