@@ -9,7 +9,7 @@ type Country = {
 
 const Countries: React.FC = () => {
   const [allCountries, setAllCountries] = useState<Country[]>([]);
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
 
   const sortCountries = () => {
     const sortedCountries = [...allCountries].sort((a, b) => {
@@ -25,6 +25,7 @@ const Countries: React.FC = () => {
   const toggleSortOrder = () => {
     const newSortOrder = sortOrder === "asc" ? "desc" : "asc";
     setSortOrder(newSortOrder);
+    sortCountries()
   };
 
   useEffect(() => {
@@ -33,20 +34,18 @@ const Countries: React.FC = () => {
       .then((data) => setAllCountries(data));
   }, []);
 
-  useEffect(() => {
-    sortCountries();
-  }, [sortOrder]);
+ 
 
   return (
     <div>
       <h2 className="text-center text-4xl">Countries: {allCountries.length}</h2>
       <div>
-        <div className="ms-5">
+        <div className="ms-10">
         <label >
-            <span>Sort By:</span>
+            <span>Sort By : </span>
         </label>
         <button
-          className="border p-2 rounded-md shadow-md mx-5"
+          className="border p-2 rounded-md shadow-md mx-5 bg-blue-600 hover:bg-blue-700 text-white"
           onClick={toggleSortOrder}
         >
           {sortOrder === "asc" ? "Ascending" : "Descending"}
@@ -54,10 +53,10 @@ const Countries: React.FC = () => {
         </div>
         {allCountries.map(({ name, region, area, flag }) => (
           <div
-            className="bg-white border rounded-md p-4 m-5 shadow-lg flex justify-start gap-10 items-center"
+            className="bg-slate-200 rounded-md p-4 m-5 shadow-lg flex justify-start gap-10 items-center"
             key={name}
           >
-            <img className="w-1/12 rounded-md" src={flag} alt="" />
+            <img className="w-1/12 border rounded-md" src={flag} alt="" />
             <div>
               <h2 className="text-2xl">Name: {name}</h2>
               <p className="text-xl">Area: {area}</p>
