@@ -141,7 +141,7 @@ const Countries: React.FC = () => {
   return (
     <div>
       <h2 className="text-center text-4xl my-10">Countries: {filteredCountries.length}</h2>
-      <div className="ms-10">
+      <div className="ms-24">
         <label>
           <span>Sort By: </span>
         </label>
